@@ -1,6 +1,6 @@
 # Starlit Db
 
-    [![Build Status](https://travis-ci.org/starweb/starlit-db-migration.svg?branch=master)](https://travis-ci.org/starweb/starlit-db-migration)
+[![Build Status](https://travis-ci.org/starweb/starlit-db-migration.svg?branch=master)](https://travis-ci.org/starweb/starlit-db-migration)
 [![Code Coverage](https://scrutinizer-ci.com/g/starweb/starlit-db-migration/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/starweb/starlit-db-migration/?branch=master)
 
 Migration library for the lightweight database/PDO abstraction layer `starlit/db`.
