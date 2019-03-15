@@ -194,17 +194,27 @@ class Migrator
 
     private function shouldMigrationBeMigrated(AbstractMigration $migration, int $toNumber, string $direction): bool
     {
-        if (($direction === self::DIRECTION_UP
-                && $migration->getNumber() <= $toNumber
-                && !in_array($migration->getNumber(), $this->getMigratedNumbers()))
-            || ($direction == self::DIRECTION_DOWN
-                && $migration->getNumber() > $toNumber
-                && in_array($migration->getNumber(), $this->getMigratedNumbers()))
+        if ($this->shouldMigrateUp($migration, $toNumber, $direction)
+            || $this->shouldMigrateDown($migration, $toNumber, $direction)
         ) {
             return true;
         }
 
         return false;
+    }
+
+    private function shouldMigrateUp(AbstractMigration $migration, int $toNumber, string $direction): bool
+    {
+        return $direction === self::DIRECTION_UP
+            && $migration->getNumber() <= $toNumber
+            && !in_array($migration->getNumber(), $this->getMigratedNumbers());
+    }
+
+    private function shouldMigrateDown(AbstractMigration $migration, int $toNumber, string $direction): bool
+    {
+        return $direction == self::DIRECTION_DOWN
+            && $migration->getNumber() > $toNumber
+            && in_array($migration->getNumber(), $this->getMigratedNumbers());
     }
 
     protected function addMigratedMigration(AbstractMigration $migration): void
@@ -324,9 +334,6 @@ class Migrator
         }
     }
 
-    /**
-     * @param string $info
-     */
     protected function addInfo(string $info): void
     {
         if ($this->infoCallback) {
