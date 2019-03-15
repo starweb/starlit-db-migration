@@ -17,15 +17,9 @@ use Starlit\Db\Db;
  */
 class Migrator
 {
-    /**
-     * @const string
-     */
-    const DIRECTION_UP = 'up';
+    private const DIRECTION_UP = 'up';
 
-    /**
-     * @const string
-     */
-    const DIRECTION_DOWN = 'down';
+    private const DIRECTION_DOWN = 'down';
 
     /**
      * @var string
