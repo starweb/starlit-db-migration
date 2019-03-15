@@ -86,17 +86,23 @@ class Migrator
     {
         $migrations = [];
         foreach ($this->findMigrationFiles() as $file) {
-            require_once $file->getPathname();
-
-            $className = '\\' . $file->getBasename('.' . $file->getExtension());
-            $migration = new $className($this->db);
-
+            $migration = $this->instantiateMigration($file);
             $migrations[$migration->getNumber()] = $migration;
         }
 
         ksort($migrations);
 
         return $migrations;
+    }
+
+    private function instantiateMigration(\SplFileInfo $file): AbstractMigration
+    {
+        require_once $file->getPathname();
+
+        $className = '\\' . $file->getBasename('.' . $file->getExtension());
+        $migration = new $className($this->db);
+
+        return $migration;
     }
 
     /**
@@ -182,6 +188,13 @@ class Migrator
             $allMigrations = array_reverse($allMigrations, true);
         }
 
+        $migrations = $this->getMigrationsToBeMigrated($allMigrations, $toNumber, $direction);
+
+        return $migrations;
+    }
+
+    private function getMigrationsToBeMigrated(array $allMigrations, int $toNumber, string $direction): array
+    {
         $migrations = [];
         foreach ($allMigrations as $migrationNumber => $migration) {
             if ($this->shouldMigrationBeMigrated($migration, $toNumber, $direction)) {
